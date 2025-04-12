@@ -1,0 +1,45 @@
+.sign-up {
+  border: 1px solid black;
+  border-radius: 3px;
+  width: 300px;
+  height: 430px;
+  margin: 8% auto;
+  text-align: center;
+}
+
+.sign-up-header {
+  font-weight: 700;
+  font-style: normal;
+  font-size: 25px;
+}
+
+.sign-up-para {
+  margin: 20px;
+}
+
+.sign-up-anchor {
+  color: blue;
+  cursor: pointer;
+}
+
+.input-component-div {
+  text-align: center;
+}
+
+.input-component-label {
+  display: block;
+  text-align: left;
+  margin: 0 0 5px 10%;
+}
+
+.input-component {
+  border: 1px solid rgb(88, 88, 88);
+  border-radius: 3px;
+  width: 80%;
+  height: 25px;
+  margin-bottom: 20px;
+}
+
+.input-component:focus {
+  outline: none;
+}
