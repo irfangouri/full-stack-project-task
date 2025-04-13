@@ -14,7 +14,7 @@ const addTodo = async (todoData, userId) => {
     description: todoData.description,
     status: todoData.status,
     createdBy: userId,
-    dueDate: todoData.dueDate,
+    dueDate: new Date(todoData.dueDate),
     priority: todoData.priority,
   });
 

@@ -6,14 +6,15 @@ const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
   const navigate = useNavigate();
-  const [auth, setAuth] = useState({ token: null, user: null });
+  const [auth, setAuth] = useState({ token: null, userId: null });
 
   useEffect(() => {
     const token = JSON.parse(localStorage.getItem('access-token'));
+    const userId = JSON.parse(localStorage.getItem('user-id'));
     const isAuthPage = location.pathname === '/login' || location.pathname === '/signup';
 
     if (token) {
-      setAuth({ token });
+      setAuth({ token, userId });
       navigate('/dashboard');
     } else if (!isAuthPage) {
       navigate('/login');
@@ -22,14 +23,20 @@ export const AuthProvider = ({ children }) => {
 
   const login = async (email, password) => {
     try {
-      const response = await axios.post(`http://localhost:4040/api/user/access-token`, {
+      const response = await axios.post(`${import.meta.env.VITE_SERVER_URL}/api/user/access-token`, {
         email,
         password,
       });
 
-      const tokenData = response.data?.user?.accessToken;
-      localStorage.setItem('access-token', JSON.stringify(tokenData));
-      setAuth({ token: tokenData });
+      const user = response.data?.user;
+      localStorage.setItem('access-token', JSON.stringify(user?.accessToken));
+      localStorage.setItem('user-id', JSON.stringify(user?.id));
+
+      setAuth({
+        token: user?.accessToken,
+        userId: user?.id,
+      });
+
       navigate('/dashboard');
     } catch (err) {
       console.error('Login Error:', err.response);
@@ -47,7 +54,7 @@ export const AuthProvider = ({ children }) => {
         return alert('Passwords do not match');
       }
 
-      const response = await axios.post(`http://localhost:4040/api/user`, {
+      const response = await axios.post(`${import.meta.env.VITE_SERVER_URL}/api/user`, {
         name,
         email,
         password,

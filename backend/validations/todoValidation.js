@@ -37,12 +37,12 @@ const validateTodo = (todoData, userId) => {
     };
   }
 
-  const dueDateValidation = dateSchema.safeParse(dueDate);
-  if (!dueDateValidation.success) {
-    return {
-      error: 'Date is not valid, it should be of type date',
-    };
-  }
+  // const dueDateValidation = dateSchema.safeParse(dueDate);
+  // if (!dueDateValidation.success) {
+  //   return {
+  //     error: 'Date is not valid, it should be of type date',
+  //   };
+  // }
 
   const priorityValidation = prioritySchema.safeParse(priority);
   if (!priorityValidation.success) {
