@@ -1,4 +1,6 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import io from 'socket.io-client';
+
 import Modal from 'react-modal';
 import { CSVLink } from 'react-csv';
 import { useAuth } from '../contexts/AuthContext';
@@ -11,6 +13,7 @@ export default function Dashboard() {
   const { logout } = useAuth();
   const { todos, addTodo } = useTodos();
   const { weather, fetchWeather } = useWeather();
+  const [btcPrice, setBtcPrice] = useState(null);
 
   const [todoModalOpen, setTodoModalOpen] = useState(false);
   const [weatherModalOpen, setWeatherModalOpen] = useState(false);
@@ -69,6 +72,17 @@ export default function Dashboard() {
       maxWidth: '500px'
     }
   };
+
+  useEffect(() => {
+    const socket = io(`${import.meta.env.VITE_WEB_SOCKET_SERVER}`);
+    socket.on('btcPrice', (price) => {
+      setBtcPrice(price);
+    });
+
+    return () => {
+      socket.disconnect();
+    };
+  }, []);
 
   return (
     <div className="dashboard">
@@ -176,6 +190,16 @@ export default function Dashboard() {
             </div>
           )}
         </div>
+
+        {btcPrice && (
+          <div className="crypto-price-card">
+            <h2>Live Bitcoin Price</h2>
+            <div className="price-info">
+              <span className="price-label">BTC/USDT:</span>
+              <span className="price-value">${parseFloat(btcPrice).toFixed(2)}</span>
+            </div>
+          </div>
+        )}
       </main>
 
       <Modal
