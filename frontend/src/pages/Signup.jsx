@@ -1,54 +1,45 @@
 import React, { useState } from 'react';
-import axios from 'axios';
 import Button from '../components/button/button';
 import './index.css';
-import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../contexts/AuthContext';
 
 export default function Signup() {
+  const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const navigate = useNavigate();
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const { signup } = useAuth();
 
-  const onClickHandler = async () => {
-    try {
-      if (!email || !password) {
-        return alert('Please fill all the fields');
-      }
-
-      const response = await axios.post(`http://localhost:4040/api/user`, {
-        username: email,
-        password,
-      }, {
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
-
-      alert(`User ${response.data.username} registered successfully, uniqueId is ${response.data.id}`);
-      setEmail('');
-      setPassword('');
-      navigate('/login');
-    } catch (err) {
-      console.error('Error occurred while registering user, Please try again later. Error: ', err.response);
-      alert(`Error: ${err.response.data}`);
-    }
-  }
+  const onClickHandler = () => {
+    signup(name, email, password, confirmPassword);
+  };
 
   return (
     <div className='sign-up'>
       <p className='sign-up-header'>Signup</p>
+
       <div className='input-component-div'>
-        <label className='input-component-label'>Enter your email: </label>
+        <label className='input-component-label'>Name: </label>
+        <input type='text' className='input-component' value={name} onChange={(e) => setName(e.target.value)} />
+      </div>
+
+      <div className='input-component-div'>
+        <label className='input-component-label'>Email: </label>
         <input type='text' className='input-component' value={email} onChange={(e) => setEmail(e.target.value)} />
       </div>
+
       <div className='input-component-div'>
-        <label className='input-component-label'>Enter your password: </label>
+        <label className='input-component-label'>Password: </label>
         <input type='password' className='input-component' value={password} onChange={(e) => setPassword(e.target.value)} />
       </div>
+
+      <div className='input-component-div'>
+        <label className='input-component-label'>Confirm Password: </label>
+        <input type='password' className='input-component' value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} />
+      </div>
+
       <Button title={'Signup'} onClickHandler={onClickHandler} />
-      <p className='sign-up-para'>Already have an account? <a className='sign-up-anchor' onClick={() => navigate('/login')}>Login</a></p>
-      <Button title={'Signup using Google'} />
-      <Button title={'Signup using Phone no.'} />
+      <p className='sign-up-para'>Already have an account? <a className='sign-up-anchor' onClick={() => window.location.href = '/login'}>Login</a></p>
     </div>
   );
 }

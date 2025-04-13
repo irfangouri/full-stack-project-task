@@ -58,31 +58,8 @@ const getUser = async (req, res) => {
   }
 }
 
-const resetPassword = async (req, res) => {
-  try {
-    const { userId } = req.params;
-    const userData = req.body;
-
-    const user = await userService.resetPassword(userId, userData);
-    if (user?.error) {
-      let statusCode = 403;
-      if (user.error === 'User not found') {
-        statusCode = 404;
-      }
-      return res.status(statusCode).send(user.error);
-    }
-
-    res.status(201).json({ user });
-  } catch(error) {
-    res.status(500).send(
-      `Error: ${error}`,
-    );
-  }
-}
-
 module.exports = {
   registerUser,
   loginUser,
   getUser,
-  resetPassword,
 };
