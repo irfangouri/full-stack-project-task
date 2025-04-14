@@ -34,8 +34,8 @@ Follow these steps to set up the application locally:
 2. **Clone the Repository**:
    - Clone the repository to your local machine using Git:
      ```bash
-     git clone https://github.com/your-repository-url
-     cd your-repository-name
+     git clone https://github.com/irfangouri/full-stack-project-task.git
+     cd full-stack-project-task
      ```
 
 3. **Install Dependencies**:
